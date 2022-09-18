@@ -1,7 +1,7 @@
-package com.myAwesomeWeb.mapper;
+package com.myAwesomeWeb.system.mapper;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
-import com.myAwesomeWeb.domain.User;
+import com.myAwesomeWeb.system.domain.User;
 
 import java.util.List;
 

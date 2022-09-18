@@ -10,7 +10,25 @@ spring:
       matching-strategy: ant_path_matcher
 
 mybatis-plus:
-  type-aliases-package: com.myAwesomeWeb.domain
+  type-aliases-package: com.myAwesomeWeb.*.domain,com.myAwesomeWeb.domain
   configuration:
     log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
   mapper-locations: classpath*:mapper/*.xml
+pagehelper:
+  support-methods-arguments: true
+  helper-dialect: mysql
+  reasonable: true
+camunda:
+  bpm:
+    admin-user:
+      id: demo
+      first-name: admin
+      password: admin
+    database:
+      type: mysql
+      schema-update: true
+    filter:
+      create: All tasks
+    # 禁止自动部署resources下面的bpmn文件
+    auto-deployment-enabled: false
+

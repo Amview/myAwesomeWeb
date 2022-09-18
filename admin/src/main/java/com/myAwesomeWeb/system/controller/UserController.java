@@ -1,9 +1,8 @@
-package com.myAwesomeWeb.controller;
+package com.myAwesomeWeb.system.controller;
 
-import com.myAwesomeWeb.domain.User;
-import com.myAwesomeWeb.service.UserService;
+import com.myAwesomeWeb.system.domain.User;
+import com.myAwesomeWeb.system.service.UserService;
 import com.myAwesomeWeb.utils.Result;
-import lombok.val;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
