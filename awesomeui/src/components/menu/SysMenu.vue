@@ -11,9 +11,8 @@
 </template>
 
 <script>
-import axios from "axios";
-import api from "@/api/api";
-import {request} from "@/utils/request";
+
+import {getSysMenu} from "@/api/menu";
 
 export default {
   name: "Menu",
@@ -35,9 +34,8 @@ export default {
   },
   methods: {
     getList(){
-      request(api.system_menu.getSysMenu,this.queryParams).then(res => {
+      getSysMenu(this.queryParams).then(res => {
         this.menuList = res.data.result.list
-        console.log(res)
       })
     },
     handleOpen(key, keyPath) {

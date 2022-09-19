@@ -11,7 +11,6 @@ public class BaseController {
     private HttpServletRequest request;
 
     public void startPage(){
-
         int pageNum = Integer.parseInt(request.getParameter("pageNum"));
         int pageSize = Integer.parseInt(request.getParameter("pageSize"));
         PageHelper.startPage(pageNum,pageSize);

@@ -1,20 +1,21 @@
 //引入axios
 import axios from "axios"
-
-export function request(baseUrl,params){
-    if (baseUrl.method === 'post'){
+export function request(params){
+    //get请求
+    if(params.params){
         return axios({
-            url: baseUrl.url,
-            method: baseUrl.method,
+            url: params.url,
+            method: params.method,
             responseType: 'json',
-            data: params
+            params: params.params
         })
+    //post请求
     }else {
         return axios({
-            url: baseUrl.url,
-            method: baseUrl.method,
+            url: params.url,
+            method: params.method,
             responseType: 'json',
-            params: params
+            data: params.data
         })
     }
 }

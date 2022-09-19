@@ -8,10 +8,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.Resource;
+import java.util.List;
 
 @RestController
-@RequestMapping("/system/user")
-public class UserController {
+    @RequestMapping("/system/user")
+public class UserController extends BaseController{
     @Resource
     private UserService userService;
 
@@ -19,5 +20,12 @@ public class UserController {
     public Result getUserById(Long id){
         User user = userService.selectUserById(id);
         return Result.success(user);
+    }
+
+    @GetMapping("/list")
+    public Result list(){
+        startPage();
+        List<User> list = userService.list();
+        return Result.page(list);
     }
 }

@@ -1,7 +1,6 @@
 import VueRouter from "vue-router"
 import Index from "@/components/Index"
 import Login from "@/components/Login"
-import SysMenu from "@/components/menu/SysMenu";
 export default new VueRouter({
     mode: 'history',
     routes: [
@@ -30,6 +29,10 @@ export default new VueRouter({
                 {
                     path: 'process',
                     component: () => import('@/components/process/Process')
+                },
+                {
+                    path: 'template',
+                    component: () => import('@/components/template/Main')
                 }
             ]
         }

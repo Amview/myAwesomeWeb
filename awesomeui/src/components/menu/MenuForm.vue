@@ -37,8 +37,7 @@
 </template>
 
 <script>
-import api from "@/api/api";
-import {request} from "@/utils/request";
+import {addMenu, updateSysMenu} from "@/api/menu";
 
 export default {
   name: "MenuForm",
@@ -126,11 +125,11 @@ export default {
         //验证通过
         if(valid){
           if(this.form.menuId != ''){
-            request(api.system_menu.updateSysMenu,this.form).then(res => {
+            updateSysMenu(this.form).then(res => {
               this.dialogOpen = false
             })
           }else {
-            request(api.system_menu.addMenu,this.form).then(res => {
+            addMenu(this.form).then(res => {
               this.dialogOpen = false
               this.$parent.event.getList()
             })

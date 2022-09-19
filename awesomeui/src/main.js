@@ -5,9 +5,7 @@ import router from "@/router/router";
 import ElementUI from 'element-ui';
 import 'element-ui/lib/theme-chalk/index.css';
 import axios from 'axios'
-import api from "@/api/api";
 import {displayDataLabelFromValue} from "./utils/base"
-Vue.prototype.$api = api
 
 Vue.prototype.axios = axios
 axios.defaults.baseURL = '/api'

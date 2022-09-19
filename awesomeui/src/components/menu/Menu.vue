@@ -19,6 +19,12 @@
           </span>
         </template>
       </el-table-column>
+      <el-table-column label="操作" header-align="center" align="center">
+        <div>
+          <el-button type="primary" size="small">修改</el-button>
+          <el-button type="danger" size="small">删除</el-button>
+        </div>
+      </el-table-column>
     </el-table>
 
     <div style="display: flex;flex-direction: row;text-align: center;margin-top: 10px">
@@ -46,10 +52,10 @@
 </template>
 
 <script>
-import api from "@/api/api";
-import {request} from "@/utils/request"
 import MenuForm from "@/components/menu/MenuForm";
 import {displayDataLabelFromValue} from "@/utils/base";
+import {addMenu, deleteMenuById, getMenuList} from "@/api/menu";
+import {getByDictType, getMenuDictList} from "@/api/dcit";
 
 export default {
   name: "Menu",
@@ -139,15 +145,13 @@ export default {
   },
   methods: {
     getList(){
-      request(api.system_menu.getMenuList,this.queryParams).then(res => {
+      getMenuList(this.queryParams).then(res => {
         this.tableData = res.data.result
       })
-      request(api.system_dict.getMenuDictList).then(res => {
+      getMenuDictList().then(res => {
         this.menuDictList = res.result
       })
-      request(api.system_dict.getByDictType, {
-          dictType: 'menu_type'
-      }).then(res => {
+      getByDictType('menu_type').then(res => {
         this.menuTypeDict = res.data.result
       })
     },
@@ -169,9 +173,7 @@ export default {
         cancelButtonText: '取消',
         type: 'warning'
       }).then(() => {
-        request(api.system_menu.deleteMenuById,{
-          id: id
-        }).then(res => {
+        deleteMenuById(id).then(res => {
           this.$message.success("删除成功"+res.data.data)
           console.log(res)
           this.getList()
@@ -185,7 +187,7 @@ export default {
 
     },
     addSubmit(){
-      request(api.system_menu.addMenu,this.addParams).then(res => {
+      addMenu(this.addParams).then(res => {
         this.$message.success("添加成功")
         this.dialogVisible = false
         this.getList()
