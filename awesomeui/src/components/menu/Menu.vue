@@ -2,29 +2,26 @@
   <div class="main">
     <el-form :inline="true">
       <el-row :gutter="10"  style="display:flex; flex-wrap:wrap;flex-direction: row">
-        <el-col :span="2"><el-button size="mini" @click="add">添加</el-button></el-col>
+        <el-col :span="2"><el-button size="mini" @click="openForm">添加</el-button></el-col>
         <el-col :span="5"><el-input size="mini" style="width: 200px"></el-input></el-col>
         <el-col :span="2"><el-button size="mini">查询</el-button></el-col>
       </el-row>
     </el-form>
       <el-table :data="tableData.list">
-      <el-table-column type="index" label="序号" header-align="center" align="center"></el-table-column>
-      <el-table-column v-for="(item,index) in cols" :label="item.label" :key="item.prop" :prop="item.prop">
-        <template slot-scope="scope">
-          <span v-if="item.prop == 'menuTypeValue'">
+        <el-table-column type="index" label="序号" header-align="center" align="center"></el-table-column>
+        <el-table-column label="菜单名称" prop="menuName" header-align="center" align="center"></el-table-column>
+        <el-table-column label="菜单类型" prop="menuTypeValue" header-align="center" align="center">
+          <template slot-scope="scope">
             {{displayDataLabelFromValue(menuTypeDict,scope.row.menuTypeValue)}}
-          </span>
-          <span v-else>
-            {{scope.row[item.prop]}}
-          </span>
-        </template>
-      </el-table-column>
-      <el-table-column label="操作" header-align="center" align="center">
-        <div>
-          <el-button type="primary" size="small">修改</el-button>
-          <el-button type="danger" size="small">删除</el-button>
-        </div>
-      </el-table-column>
+          </template>
+        </el-table-column>
+        <el-table-column label="菜单路径" prop="menuPath" header-align="center" align="center"></el-table-column>
+        <el-table-column label="操作" header-align="center" align="center">
+          <template slot-scope="scope">
+            <el-button type="primary" size="small" @click="openForm(scope.row)">修改</el-button>
+            <el-button type="danger" size="small" @click="deleteMenu(scope.row)">删除</el-button>
+          </template>
+        </el-table-column>
     </el-table>
 
     <div style="display: flex;flex-direction: row;text-align: center;margin-top: 10px">
@@ -38,23 +35,18 @@
       </el-pagination>
     </div>
 
-
-    <MenuForm ref="MenuUpdate"
-             :title="componentProp.title"
-             :menuDictList="menuDictList"
-              >
-    </MenuForm>
-    <MenuForm ref="MenuAdd"
-             :title="componentProp.title"
-             >
+    <MenuForm ref="MenuForm"
+              :title="componentProp.title"
+              :menu-type-dict="menuTypeDict"
+              @refreshData="getList"
+        >
     </MenuForm>
   </div>
 </template>
 
 <script>
 import MenuForm from "@/components/menu/MenuForm";
-import {displayDataLabelFromValue} from "@/utils/base";
-import {addMenu, deleteMenuById, getMenuList} from "@/api/menu";
+import {addMenu, deleteMenuById, getMenuList} from "@/api/system/menu/menu";
 import {getByDictType, getMenuDictList} from "@/api/dcit";
 
 export default {
@@ -106,35 +98,6 @@ export default {
         pageSize: '',
         size: '',
       },
-      cols: [
-        {
-          label:"菜单id",
-          prop: "menuId",
-          width:"180"
-        },
-        {
-          label:"菜单类型",
-          prop: "menuTypeValue",
-          width:"180",
-          handle() {
-          }
-        },
-        {
-          label:"菜单名称",
-          prop: "menuName",
-          width:"180"
-        },
-        {
-          label:"菜单路径",
-          prop: "menuPath",
-          width:"180"
-        },
-        {
-          label:"菜单路径",
-          prop: "menuPath",
-          width:"180"
-        }
-      ],
     }
   },
   created() {
@@ -146,6 +109,7 @@ export default {
   methods: {
     getList(){
       getMenuList(this.queryParams).then(res => {
+        console.log('数据',res)
         this.tableData = res.data.result
       })
       getMenuDictList().then(res => {
@@ -155,25 +119,20 @@ export default {
         this.menuTypeDict = res.data.result
       })
     },
-    add(){
-      this.$refs.MenuAdd.add()
-      this.componentProp.title = "增加"
+    openForm(row){
+      this.$refs.MenuForm.show(row)
       for (let addParamsKey in this.addParams) {
         this.addParams[addParamsKey] = ''
       }
       this.addParams.menuType = 'menu_type'
     },
-    updateMenu(row){
-      this.$refs.MenuUpdate.update(row)
-      this.componentProp.title = "修改"
-    },
-    deleteItem(id){
+    deleteMenu(row){
       this.$confirm('是否删除?', '提示', {
         confirmButtonText: '确定',
         cancelButtonText: '取消',
         type: 'warning'
       }).then(() => {
-        deleteMenuById(id).then(res => {
+        deleteMenuById(row.menuId).then(res => {
           this.$message.success("删除成功"+res.data.data)
           console.log(res)
           this.getList()

@@ -73,6 +73,7 @@ public class MenuController extends BaseController{
         }
         return childrenMenuList;
     }
+
     @PostMapping("/add")
     public Result add(@RequestBody Menu menu){
         boolean save = menuService.save(menu);
@@ -87,6 +88,11 @@ public class MenuController extends BaseController{
     @GetMapping ("/deleteById")
     public Result deleteById(Long id){
         boolean b = menuService.removeById(id);
+        return Result.success(b);
+    }
+    @PostMapping("/update")
+    public Result updateMenu(@RequestBody Menu menu){
+        boolean b = menuService.updateById(menu);
         return Result.success(b);
     }
 }

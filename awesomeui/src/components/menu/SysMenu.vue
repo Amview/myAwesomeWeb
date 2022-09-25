@@ -12,7 +12,7 @@
 
 <script>
 
-import {getSysMenu} from "@/api/menu";
+import {getSysMenu} from "@/api/system/menu/menu";
 
 export default {
   name: "Menu",

@@ -10,7 +10,6 @@
       <el-table :data="tableData.list">
         <el-table-column type="index" label="序号" header-align="center" align="center"></el-table-column>
         <el-table-column label="用户名字" prop="userName" header-align="center" align="center"></el-table-column>
-        <el-table-column label="密码" prop="password" header-align="center" align="center"></el-table-column>
         <el-table-column label="操作" header-align="center" align="center">
           <template slot-scope="scope">
             <el-button type="primary" size="small" @click="update(scope.row)">修改</el-button>
@@ -32,13 +31,13 @@
 
     <UserForm
         ref="UserForm"
-        :title="title"
+        @refreshData="getList"
     ></UserForm>
     </div>
 </template>
 
 <script>
-import {getUserList} from "@/api/user";
+import {getUserList} from "@/api/system/user/user";
 import UserForm from "@/components/user/page/UserForm";
 
 export default {
@@ -59,11 +58,14 @@ export default {
     }
   },
   created() {
-    getUserList(this.queryParams).then(res => {
-      this.tableData = res.data.result
-    })
+    this.getList()
   },
   methods: {
+    getList(){
+      getUserList(this.queryParams).then(res => {
+        this.tableData = res.data.result
+      })
+    },
     add(row){
       this.title = "添加"
       this.$refs.UserForm.show(row)
